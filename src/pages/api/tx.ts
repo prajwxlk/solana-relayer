@@ -13,6 +13,7 @@ import {
   Message,
   PublicKey,
 } from "@solana/web3.js";
+import NextCors from "nextjs-cors";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +21,12 @@ export default async function handler(
 ) {
   const { access, secret, from, signature, tx } = req.body;
   console.log(new PublicKey(from));
-
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const cred = await prisma.keys.findFirst({
     where: {
       access,
@@ -48,7 +54,10 @@ export default async function handler(
   );
 
   transaction.partialSign(keyPair);
-  transaction.addSignature(new PublicKey(from), Buffer.from(Base58.decode(signature)));
+  transaction.addSignature(
+    new PublicKey(from),
+    Buffer.from(Base58.decode(signature))
+  );
   console.log(transaction.signatures);
 
   console.log("cjhcj3h3jch");
