@@ -13,14 +13,36 @@ import {
   Message,
   PublicKey,
 } from "@solana/web3.js";
+import NextCors from "nextjs-cors";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { access, secret, from, signature, tx } = req.body;
-  console.log(new PublicKey(from));
+  const { access, secret, from, signature, tx, signatures, froms } = req.body;
+  console.log(signatures, froms);
+  if (signature && signatures) {
+    res.status(400).json({
+      error: "Cannot have both signature and signatures",
+    });
+    return;
+  }
 
+  if (signatures) {
+    if (signatures.length !== froms.length) {
+      res.status(400).json({
+        error: "Signatures and froms must be the same length",
+      });
+      return;
+    }
+  }
+
+  await NextCors(req, res, {
+    // Options
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "*",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
   const cred = await prisma.keys.findFirst({
     where: {
       access,
@@ -41,25 +63,49 @@ export default async function handler(
   const keyPair = Keypair.fromSecretKey(Uint8Array.from(array));
   console.log(keyPair.publicKey.toString());
 
-  let connection = new Connection(clusterApiUrl("devnet"));
+  let connection = new Connection("https://solana-mainnet.g.alchemy.com/v2/N-5ODcn6lVdMpT8TMv11np-StlRbIG2d");
 
   const transaction = Transaction.populate(
     Message.from(Buffer.from(tx, "base64"))
   );
 
+  // const x = await connection.getLatestBlockhash();
+
+  // transaction.recentBlockhash = x.blockhash;
+
+  // transaction.lastValidBlockHeight = x.lastValidBlockHeight;
+
+  if (signature) {
+    transaction.addSignature(
+      new PublicKey(from),
+      Buffer.from(Base58.decode(signature))
+    );
+  } else {
+    for (let i = 0; i < signatures.length; i++) {
+      transaction.addSignature(
+        new PublicKey(froms[i]),
+        Buffer.from(Base58.decode(signatures[i]))
+      );
+    }
+  }
   transaction.partialSign(keyPair);
-  transaction.addSignature(new PublicKey(from), Buffer.from(Base58.decode(signature)));
+
   console.log(transaction.signatures);
 
-  console.log("cjhcj3h3jch");
-
-  const result = await connection.sendEncodedTransaction(
-    transaction.serialize().toString("base64")
-  );
-
-  console.log(result);
-  return res.status(200).json({
-    success: true,
-    result,
-  });
+  try {
+    const result = await connection.sendEncodedTransaction(
+      transaction.serialize().toString("base64")
+    );
+    console.log(result);
+    return res.status(200).json({
+      success: true,
+      result,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      success: false,
+      result: "we're fucked",
+    });
+  }
 }
