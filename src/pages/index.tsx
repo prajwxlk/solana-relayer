@@ -183,7 +183,7 @@ const Home: NextPage = () => {
 
       <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
-          raid.farm <span className="text-green-300">solana</span> relayer
+         serverless <span className="text-green-300">solana</span> relayer
         </h1>
         {loggedIn ? (
           <>
