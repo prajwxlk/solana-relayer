@@ -63,7 +63,7 @@ export default async function handler(
   const keyPair = Keypair.fromSecretKey(Uint8Array.from(array));
   console.log(keyPair.publicKey.toString());
 
-  let connection = new Connection("https://solana-mainnet.g.alchemy.com/v2/N-5ODcn6lVdMpT8TMv11np-StlRbIG2d");
+  let connection = new Connection(clusterApiUrl("devnet"));
 
   const transaction = Transaction.populate(
     Message.from(Buffer.from(tx, "base64"))
