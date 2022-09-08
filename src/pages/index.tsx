@@ -27,7 +27,7 @@ const Home: NextPage = () => {
 
 
   const incorrectCred = () => toast.error('Incorrect Credentials. Please try again.');
-  const signInLogin = () => toast.loading('Logging in...', {duration: 500});
+  const signInLogin = () => toast.loading('Logging in...', {duration: 800});
   
 
 
