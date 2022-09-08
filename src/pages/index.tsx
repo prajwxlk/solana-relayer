@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import useSWR from 'swr';
 
 type TechnologyCardProps = {
   name: string;
@@ -21,6 +22,13 @@ const Home: NextPage = () => {
   const [modalAction, setModalAction] = useState("");
   const [modalError, setModalError] = useState(false);
   const [relayerAddress, setRelayerAddress] = useState("");
+  const fetcher = (url) => fetch(url).then(res => res.json())
+  const { data, error } = useSWR('/api/list', fetcher)
+
+  console.log("the data is : " + JSON.stringify(data));
+  console.log("the keys are : " + JSON.stringify(data.keys));
+  const keys = data.keys;
+
 
   const incorrectCred = () => toast.error('Incorrect Credentials. Please try again.');
 
@@ -264,38 +272,25 @@ const Home: NextPage = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className=" border-b">
-                              <th scope="row" className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                a3ce4462-6d3f-497c-9b88-23baa3df67dc
-                              </th>
-                              <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                18/08/2022
-                              </td>
-                              <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                28/12/2022
-                              </td>
-                              <td className="py-4 px-6">
-                                <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className=" border-b">
-                              <th scope="row" className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                02b5d644-a602-4b5a-b37c-9fb9382f8ed5
-                              </th>
-                              <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                19/10/2022
-                              </td>
-                              <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
-                                13/12/2022	
-                              </td>
-                              <td className="py-4 px-6">
-                                <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                  Delete
-                              </button>
-                              </td>
-                            </tr>
+                            {keys.map((keys, index) => (
+                              <tr key={index} className=" border-b">
+                                <th scope="row" className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
+                                  {keys}
+                                </th>
+                                <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
+                                  18/08/2022
+                                </td>
+                                <td className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
+                                  28/12/2022
+                                </td>
+                                <td className="py-4 px-6">
+                                  <button type="button" className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                            
                           </tbody>
                         </table>
                       </div>
