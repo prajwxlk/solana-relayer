@@ -230,7 +230,7 @@ const Home: NextPage = () => {
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                       <div className="flex gap-2">
-                        <a href="https://docs.raid.farm/docs/utilities/solana-relayer" target="_blank" className=" bg-gray-600 hover:bg-white text-white hover:text-black px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white" aria-current="page">
+                        <a href="https://docs.raid.farm/docs/utilities/solana-relayer" target="_blank" rel="noreferrer" className=" bg-gray-600 hover:bg-white text-white hover:text-black px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white" aria-current="page">
                           Documentation
                         </a>
                         <a onClick={() => alert("Your address is " + relayerAddress)} className=" bg-gray-600 hover:bg-gray-400 text-white px-3 py-2 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" aria-current="page">
