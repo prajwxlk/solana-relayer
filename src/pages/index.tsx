@@ -24,9 +24,6 @@ const Home: NextPage = () => {
   const [relayerAddress, setRelayerAddress] = useState("");
   const fetcher = (url: RequestInfo | URL) => fetch(url).then(res => res.json())
   const { data, error } = useSWR('/api/list', fetcher)
-
-  console.log("the data is : " + JSON.stringify(data));
-  console.log("the keys are : " + JSON.stringify(data.keys));
   const keys = data.keys;
 
 
