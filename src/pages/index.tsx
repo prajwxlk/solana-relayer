@@ -24,7 +24,10 @@ const Home: NextPage = () => {
   const [relayerAddress, setRelayerAddress] = useState("");
   const fetcher = (url: RequestInfo | URL) => fetch(url).then(res => res.json())
   const { data, error } = useSWR('/api/list', fetcher)
-  const keys = data.keys;
+  var keys = "";
+  if (data) {
+    keys = data.keys;
+  } 
 
 
   const incorrectCred = () => toast.error('Incorrect Credentials. Please try again.');
