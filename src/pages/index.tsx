@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import useSWR from 'swr';
 
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   const [modalAction, setModalAction] = useState("");
   const [modalError, setModalError] = useState(false);
   const [relayerAddress, setRelayerAddress] = useState("");
-  const fetcher = (url) => fetch(url).then(res => res.json())
+  const fetcher = (url: RequestInfo | URL) => fetch(url).then(res => res.json())
   const { data, error } = useSWR('/api/list', fetcher)
 
   console.log("the data is : " + JSON.stringify(data));
@@ -272,7 +272,7 @@ const Home: NextPage = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {keys.map((keys, index) => (
+                            {keys.map((keys: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, index: Key | null | undefined) => (
                               <tr key={index} className=" border-b">
                                 <th scope="row" className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
                                   {keys}
