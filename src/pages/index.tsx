@@ -24,10 +24,6 @@ const Home: NextPage = () => {
   const [relayerAddress, setRelayerAddress] = useState("");
   const fetcher = (url: RequestInfo | URL) => fetch(url).then(res => res.json())
   const { data, error } = useSWR('/api/list', fetcher)
-  var keys = "";
-  if (data) {
-    keys = data.keys;
-  } 
 
 
   const incorrectCred = () => toast.error('Incorrect Credentials. Please try again.');
@@ -272,7 +268,7 @@ const Home: NextPage = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {keys.map((keys: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, index: Key | null | undefined) => (
+                            {data.keys.map((keys: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined, index: Key | null | undefined) => (
                               <tr key={index} className=" border-b">
                                 <th scope="row" className="py-4 px-6 font-medium text-gray-100 whitespace-nowrap">
                                   {keys}
