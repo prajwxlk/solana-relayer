@@ -348,12 +348,6 @@ const Home: NextPage = () => {
                     Sign in
                   </button>
                 </div>
-
-                <div className="flex justify-center">
-                  <div className="text-sm">
-                    <a href="#" className="font-medium"> Don&apos;t have an account? Sign up </a>
-                  </div>
-                </div>
               </div>
             </div>
           </body>
