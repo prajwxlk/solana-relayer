@@ -27,9 +27,12 @@ const Home: NextPage = () => {
 
 
   const incorrectCred = () => toast.error('Incorrect Credentials. Please try again.');
+  const signInLogin = () => toast.loading('Logging in...', {duration: 500});
+  
 
 
   function signup() {
+    signInLogin();
     fetch("/api/auth", {
       method: "POST",
       headers: {
